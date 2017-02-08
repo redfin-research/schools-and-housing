@@ -7,7 +7,7 @@
 rm(list=ls(all.names = TRUE))
 
 # Set Directory
-setwd("~/Google Drive/PRTeam Analysis/Misc/2017-02 Misc/New York Times School Viz/GitHub Files School Zone//")
+setwd("~/Google Drive/PRTeam Analysis/Misc/2017-02 Misc/New York Times School Viz/GitHub Files School Zone/")
 
 # Load Packages
 packagesRequired <- c('stringr',
@@ -96,7 +96,7 @@ glimpse(full_dataset)
           plot.caption = element_text(size = rel(.8))) +
     labs(x="School Rating", 
         y="Median Home Price per sqft", 
-        caption = "Source: GreatSchools; Redfin") +
+        caption = "Data Source: GreatSchools; Redfin") +
     scale_color_fivethirtyeight())
 
 ggsave('housing_affordability_school_quality_graphic.png')
@@ -113,7 +113,7 @@ ggsave('housing_affordability_school_quality_graphic.png')
                 subtitle = "Average Home Price per sqft by Great School Rating") +
         theme_fivethirtyeight() +
         theme(plot.caption = element_text(size = rel(.8))) +
-        labs(x="", y="", caption = "Source: GreatSchools; Redfin") +
+        labs(x="", y="", caption = "Data Source: GreatSchools; Redfin") +
         scale_fill_fivethirtyeight())
 
 ggsave('overall_housing_cost_vs_school_quality_graphic.png')
@@ -145,7 +145,7 @@ metros <- metro_premium_data %>%
                 subtitle = "Average Home Price per sqft by Great School Rating") +
         theme_fivethirtyeight() +
         theme(plot.caption = element_text(size = rel(.8))) +
-        labs(x="", y="", caption = "Source: GreatSchools; Redfin", col="") +
+        labs(x="", y="", caption = "Data Source: GreatSchools; Redfin", col="") +
         scale_color_economist(limits=c("poor_school", "average_school", "top_school"),
                                     labels=c("Poor School", "Average School", "Top School")))
 
