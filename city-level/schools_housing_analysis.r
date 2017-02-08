@@ -83,7 +83,7 @@ full_dataset <- full_dataset %>%
               plot.caption = element_text(size = rel(.8))) +
         labs(x="Average School Rating", 
              y="Percentage of Students in a Top School", 
-             caption = "Source: GreatSchools") +
+             caption = "Data Source: GreatSchools") +
         scale_color_fivethirtyeight())
 
 ggsave('school_quality_graphic.png')
@@ -94,14 +94,18 @@ ggsave('school_quality_graphic.png')
         geom_jitter(alpha = 0.6, show.legend = F, width = 0.1,
                     aes(size = total_students)) +
         scale_y_continuous(labels = scales::dollar) +
-        ggtitle("Cheaper Housing and Better Schools",
+        ggtitle("Often Cheaper Housing with Better Schools",
                 subtitle = "Each circle is a suburb, sized by number of students") +
         theme_fivethirtyeight() +
         theme(axis.title = element_text(size = rel(.8)),
               plot.caption = element_text(size = rel(.8))) +
         labs(x="Difference in Average School Rating", 
              y="Difference in Home Price per sqft", 
-             caption = "Source: GreatSchools; Redfin") +
+             caption = "Data Source: GreatSchools; Redfin") +
+        annotate("rect", xmin = -8, xmax = -2.5, ymin = 700, ymax = 900, fill = '#F0F0F0', 
+                 col="grey60", linetype="dashed") +
+        annotate("text", x=-5.2, y=800, 
+                 label="Suburbs are rarely both \nmore expensive and lower \nin their avg. school ratings") +
         scale_color_fivethirtyeight())
 
 ggsave('suburban_affordability_vs_school_quality.png')
@@ -120,7 +124,7 @@ ggsave('suburban_affordability_vs_school_quality.png')
           plot.caption = element_text(size = rel(.8))) +
     labs(x="Average School Rating", 
         y="Median Home Sale Price", 
-        caption = "Source: GreatSchools; Redfin") +
+        caption = "Data Source: GreatSchools; Redfin") +
     scale_color_fivethirtyeight())
 
 ggsave('housing_affordability_school_quality_graphic.png')
