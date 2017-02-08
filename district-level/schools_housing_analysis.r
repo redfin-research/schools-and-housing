@@ -76,7 +76,7 @@ glimpse(full_dataset)
           plot.caption = element_text(size = rel(.8))) +
     labs(x="Average School Rating", 
         y="Median Home Sale Price", 
-        caption = "Source: GreatSchools; Redfin") +
+        caption = "Data Source: GreatSchools; Redfin") +
     scale_color_fivethirtyeight())
 
 ggsave('housing_affordability_school_quality_graphic.png')
