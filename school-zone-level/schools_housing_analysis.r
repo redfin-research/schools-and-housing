@@ -35,28 +35,28 @@ summary(great_schools_ratings)
 
 hist(great_schools_ratings$great_schools_rating, 10)
 
-print(great_schools_ratings %>%
-          group_by(district_nces_code, district_name) %>%
-          summarise(n_schools = n_distinct(nces_code)) %>%
-          arrange(desc(n_schools)), n = 100)
+great_schools_ratings %>%
+          dplyr::group_by(district_nces_code, district_name) %>%
+          dplyr::summarise(n_schools = n_distinct(nces_code)) %>%
+          arrange(desc(n_schools))
 
 # Top 10 metros for top schools
 great_schools_ratings %>%
-          group_by(redfin_metro) %>%
-          summarise(n_schools = n_distinct(nces_code),
+    dplyr::group_by(redfin_metro) %>%
+    dplyr::summarise(n_schools = n_distinct(nces_code),
                     n_top_schools = n_distinct(nces_code[school_quality=='top_school']),
                     percent_top_schools = n_top_schools / n_schools) %>%
-          filter(n_top_schools >= 5) %>%
-          arrange(desc(percent_top_schools))
+    dplyr::filter(n_top_schools >= 5) %>%
+    dplyr::arrange(desc(percent_top_schools))
     
 # Top 10 metros for poor schools
 great_schools_ratings %>%
-    group_by(redfin_metro) %>%
-    summarise(n_schools = n_distinct(nces_code),
+    dplyr::group_by(redfin_metro) %>%
+    dplyr::summarise(n_schools = n_distinct(nces_code),
               n_poor_schools = n_distinct(nces_code[school_quality=='poor_school']),
               percent_poor_schools = n_poor_schools / n_schools) %>%
-    filter(n_poor_schools >= 5) %>%
-    arrange(desc(percent_poor_schools))
+    dplyr::filter(n_poor_schools >= 5) %>%
+    dplyr::arrange(desc(percent_poor_schools))
 
 
 housing_cost <- read_csv("housing_cost_data.csv")
@@ -82,6 +82,8 @@ full_dataset <- merge(great_schools_ratings, housing_cost_controlled, by.x = "nc
 
 glimpse(full_dataset)
 
+write_csv(full_dataset, "combined_school_zone_data.csv")
+
 # Plot the data
 (graphic <- ggplot(full_dataset, 
                    aes(great_schools_rating, median_sale_price_per_sqft)) +
@@ -102,8 +104,8 @@ glimpse(full_dataset)
 ggsave('housing_affordability_school_quality_graphic.png')
 
 (graphic_overall <- full_dataset %>%
-        group_by(great_schools_rating) %>%
-        summarise(price_per_sqft = mean(median_sale_price_per_sqft, na.rm = T)) %>%
+        dplyr::group_by(great_schools_rating) %>%
+        dplyr::summarise(price_per_sqft = mean(median_sale_price_per_sqft, na.rm = T)) %>%
         ggplot(., 
                    aes(great_schools_rating, price_per_sqft)) +
         geom_bar(stat = "identity", show.legend = F, aes(fill = '#008FD5')) +
@@ -120,17 +122,17 @@ ggsave('overall_housing_cost_vs_school_quality_graphic.png')
 
 # Should repull data directly from SQL to avoid an average of medians
 metro_premium_data <- full_dataset %>%
-    group_by(redfin_metro, school_quality) %>%
-    summarise(price_per_sqft = mean(median_sale_price_per_sqft, na.rm = T)) %>%
-    arrange(redfin_metro, price_per_sqft) %>%
-    mutate(price_per_sqft_diff = price_per_sqft - first(price_per_sqft))
+    dplyr::group_by(redfin_metro, school_quality) %>%
+    dplyr::summarise(price_per_sqft = mean(median_sale_price_per_sqft, na.rm = T)) %>%
+    dplyr::arrange(redfin_metro, price_per_sqft) %>%
+    dplyr::mutate(price_per_sqft_diff = price_per_sqft - first(price_per_sqft))
 
 # 20 most expensive only
 metros <- metro_premium_data %>% 
-    group_by(redfin_metro) %>%
-    filter(school_quality=='top_school') %>%
-    arrange(desc(price_per_sqft)) %>%
-    ungroup() %>%
+    dplyr::group_by(redfin_metro) %>%
+    dplyr::filter(school_quality=='top_school') %>%
+    dplyr::arrange(desc(price_per_sqft)) %>%
+    dplyr::ungroup() %>%
     dplyr::slice(1:20)
 
 # Slight update of data from this post:
