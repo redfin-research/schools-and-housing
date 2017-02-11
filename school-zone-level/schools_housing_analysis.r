@@ -1,5 +1,5 @@
 #############################################
-# School Quality and Housing Affordability
+# School Quality and Housing Affordability by Zone
 # By Taylor Marr
 # with the NYTimes
 #############################################
@@ -59,7 +59,7 @@ great_schools_ratings %>%
     dplyr::arrange(desc(percent_poor_schools))
 
 
-housing_cost <- read_csv("housing_cost_data.csv")
+housing_cost <- read_delim("housing_cost_data.csv", delim = ';')
 
 glimpse(housing_cost)
 summary(housing_cost)
@@ -67,18 +67,26 @@ summary(housing_cost)
 filter(housing_cost, total_sales==max(total_sales))
 
 hist(housing_cost$median_sale_price, 30)
-hist(housing_cost$median_sale_price_per_sqft, 30)
+hist(housing_cost$median_sale_price_per_sqft[housing_cost$median_sale_price_per_sqft<=10000], 30)
 
-housing_cost_controlled <- read_csv("housing_cost_controlled_data.csv")
+housing_cost_controlled <- read_delim("housing_cost_controlled_data.csv", delim = ';')
 
 glimpse(housing_cost_controlled)
 summary(housing_cost_controlled)
 
 hist(housing_cost_controlled$median_sale_price, 30)
-hist(housing_cost_controlled$median_sale_price_per_sqft, 30)
+hist(housing_cost_controlled$median_sale_price_per_sqft[housing_cost_controlled$median_sale_price_per_sqft<=2000], 30)
 
 # Pull it all together
-full_dataset <- merge(great_schools_ratings, housing_cost_controlled, by.x = "nces_code", by.y = "school_nces_code")
+full_dataset <- merge(great_schools_ratings, 
+                      select(
+                        housing_cost
+                        , -school_name
+                        , -district_nces_code
+                        , -district_name
+                        , -cbsa_title), 
+                      by.x = "nces_code", 
+                      by.y = "school_nces_code")
 
 glimpse(full_dataset)
 
