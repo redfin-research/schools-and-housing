@@ -1,5 +1,5 @@
 #############################################
-# School Quality and Housing Affordability
+# School Quality and Housing Affordability by District
 # By Taylor Marr
 # with the NYTimes
 #############################################
@@ -46,7 +46,6 @@ glimpse(housing_cost)
 summary(housing_cost)
 
 hist(housing_cost$median_sale_price, 30)
-hist(housing_cost$median_sale_price_per_sqft, 30)
 
 housing_cost_controlled <- read_csv("housing_cost_controlled_data.csv")
 
@@ -57,9 +56,15 @@ hist(housing_cost_controlled$median_sale_price, 30)
 hist(housing_cost_controlled$median_sale_price_per_sqft, 30)
 
 # Pull it all together
-full_dataset <- merge(great_schools_ratings, housing_cost_controlled, by = "district_nces_code")
+full_dataset <- merge(great_schools_ratings, 
+                    select(
+                        housing_cost
+                        , -district_name)
+                    , by = "district_nces_code")
 
 glimpse(full_dataset)
+
+write_csv(full_dataset, "combined_school_district_data.csv")
 
 # Plot the data
 (graphic <- ggplot(full_dataset, 
@@ -80,4 +85,3 @@ glimpse(full_dataset)
     scale_color_fivethirtyeight())
 
 ggsave('housing_affordability_school_quality_graphic.png')
-
