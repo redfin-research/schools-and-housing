@@ -66,16 +66,31 @@ summary(housing_cost)
 
 filter(housing_cost, total_sales==max(total_sales))
 
+# removed bad data
+# View(filter(housing_cost, median_sale_price_per_sqft>=5000))
+housing_cost$median_sale_price_per_sqft[housing_cost$median_sale_price_per_sqft >= 5000 & !is.na(housing_cost$median_sale_price_per_sqft)] <- NA
+
 hist(housing_cost$median_sale_price, 30)
-hist(housing_cost$median_sale_price_per_sqft[housing_cost$median_sale_price_per_sqft<=10000], 30)
+hist(housing_cost$median_sale_price_per_sqft, 30)
 
 housing_cost_controlled <- read_delim("housing_cost_controlled_data.csv", delim = ';')
 
 glimpse(housing_cost_controlled)
 summary(housing_cost_controlled)
 
+housing_cost_controlled$median_sale_price_per_sqft[housing_cost_controlled$median_sale_price_per_sqft >= 5000 & !is.na(housing_cost_controlled$median_sale_price_per_sqft)] <- NA
+
 hist(housing_cost_controlled$median_sale_price, 30)
-hist(housing_cost_controlled$median_sale_price_per_sqft[housing_cost_controlled$median_sale_price_per_sqft<=2000], 30)
+hist(housing_cost_controlled$num_bedrooms, 30)
+hist(housing_cost_controlled$median_sale_price_per_sqft, 30)
+
+ttl_sales <- sum(housing_cost_controlled$total_sales)
+
+housing_cost_controlled %>% 
+    dplyr::group_by(property_type) %>% 
+    summarise(sales = sum(total_sales), 
+              as_pct = scales::percent(sales/ttl_sales)) %>% 
+    arrange(desc(sales))
 
 # Pull it all together
 full_dataset <- merge(great_schools_ratings, 
