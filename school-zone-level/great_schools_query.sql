@@ -1,7 +1,6 @@
 -- Pull Data from Great Schools Data tables
 with principal_city_suburbs as ( --identify suburbs
 	select p.place_id
-	, p.county_id
 	, (case 
 		when dense_rank() over (partition by m.cbsa_title order by pp.total_population desc) = 1 
 		then 'principal_city' else 'suburb' end) as is_suburb
@@ -13,7 +12,7 @@ select nces_code
 , name
 , schools.city
 , schools.state_code
-, is_suburb
+, COALESCE(is_suburb, 'suburb'::text) as is_suburb
 , district_nces_code
 , district_name
 , redfin_metro
@@ -26,8 +25,8 @@ select nces_code
 , great_schools_rating
 , number_of_students
 from schools
-join principal_city_suburbs p on schools.place_id = p.place_id
-join geo_metro m on p.county_id = m.county_id
+left join principal_city_suburbs p on schools.place_id = p.place_id
+join geo_metro m on LPAD(fips_county::text, 5, '0') = (LPAD(fips_state_code::text, 2, '0') || LPAD(fips_county_code::text, 3, '0'))
 where institution_type = 'Public'
 and elementary = TRUE
 and great_schools_rating is not null
