@@ -81,7 +81,6 @@
 "0403950","Baboquivari Unified School District #40","Tucson, AZ","Tucson, AZ","Tucson, AZ",0,0,1,1,0,529
 "0902310","Manchester School District","Hartford, CT","Hartford-West Hartford-East Hartford, CT","Hartford-West Hartford-East Hartford, CT",0,0,4.2,6,0,3475
 "0802340","Adams-Arapahoe 28j School District","Denver, CO","Denver-Aurora-Lakewood, CO","Denver-Aurora-Lakewood, CO",1,0.0294117647058824,3.59,9,0.0314502349423323,18728
-"3905002","Hudson City School District","Akron, OH","Akron, OH","Akron, OH",1,1,10,10,1,651
 "3904604","Fayetteville-Perry Local School District","Cincinnati, OH","Cincinnati, OH-KY-IN","Cincinnati, OH-KY-IN",0,0,7,7,0,378
 "3904722","West Geauga Local School District","Cleveland, OH","Cleveland-Elyria, OH","Cleveland-Elyria, OH",2,1,10,10,1,795
 "0619440","Keppel Union Elementary School District","Los Angeles, CA","Los Angeles-Long Beach-Glendale, CA","Los Angeles-Long Beach-Anaheim, CA",0,0,4,5,0,2256
@@ -903,8 +902,8 @@
 "3600077","Nyc Geog District # 2 - Manhattan","New York, NY","New York-Jersey City-White Plains, NY-NJ","New York-Newark-Jersey City, NY-NJ-PA",23,0.71875,8.88,10,0.7503175947491,18892
 "1200810","Hernando","Tampa, FL","Tampa-St. Petersburg-Clearwater, FL","Tampa-St. Petersburg-Clearwater, FL",1,0.0769230769230769,4.85,10,0.130520927928672,12113
 "2512000","Waltham School District","Boston, MA","Cambridge-Newton-Framingham, MA","Boston-Cambridge-Newton, MA-NH",0,0,6,8,0,2690
-"3406000","Gloucester City Public School District","Camden, NJ","Camden, NJ","Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",0,0,4,4,0,375
 "3405850","Gibbsboro Elementary School District","Camden, NJ","Camden, NJ","Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",0,0,7,7,0,261
+"3406000","Gloucester City Public School District","Camden, NJ","Camden, NJ","Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",0,0,4,4,0,375
 "4824600","Jarrell Independent School District","Austin, TX","Austin-Round Rock, TX","Austin-Round Rock, TX",0,0,5,5,0,479
 "1738220","Summit Hill School District 161","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,5.8,7,0,2502
 "2912480","Strain-Japan R-Xvi School District","St. Louis, MO","St. Louis, MO-IL","St. Louis, MO-IL",0,0,6,6,0,68
@@ -2102,8 +2101,8 @@
 "5509060","Menomonee Falls School District","Milwaukee, WI","Milwaukee-Waukesha-West Allis, WI","Milwaukee-Waukesha-West Allis, WI",2,0.5,8.25,9,0.420108695652174,1840
 "2602520","Allen Park Public Schools","Detroit, MI","Detroit-Dearborn-Livonia, MI","Detroit-Warren-Dearborn, MI",0,0,5,6,0,1552
 "4212540","Jim Thorpe Area School District","Allentown, PA","Allentown-Bethlehem-Easton, PA-NJ","Allentown-Bethlehem-Easton, PA-NJ",0,0,5,5,0,1524
-"1742570","Willow Springs School District 108","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,4,4,0,389
 "1714550","Evergreen Park Educational Service District 124 School District","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,6,8,0,1329
+"1742570","Willow Springs School District 108","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,4,4,0,389
 "3608790","Dansville Central School District","Rochester, NY","Rochester, NY","Rochester, NY",0,0,5,5,0,431
 "0803690","Elbert 200 School District","Denver, CO","Denver-Aurora-Lakewood, CO","Denver-Aurora-Lakewood, CO",0,0,3,3,0,95
 "0600019","Dublin Unified School District","Oakland, CA","Oakland-Hayward-Berkeley, CA","San Francisco-Oakland-Hayward, CA",6,1,9.67,10,1,4928
@@ -2156,8 +2155,8 @@
 "4033480","Yukon School District","Oklahoma City, OK","Oklahoma City, OK","Oklahoma City, OK",4,0.444444444444444,7.44,9,0.415876185721418,4006
 "3411010","Mountain Lakes Board of Education School District","Newark, NJ","Newark, NJ-PA","New York-Newark-Jersey City, NY-NJ-PA",1,1,10,10,1,456
 "2511520","Taunton School District","Providence, RI","Providence-Warwick, RI-MA","Providence-Warwick, RI-MA",0,0,4,7,0,2594
-"4220430","Riverview School District","Pittsburgh, PA","Pittsburgh, PA","Pittsburgh, PA",1,0.5,9,10,0.639252336448598,535
 "4225680","West Mifflin Area School District","Pittsburgh, PA","Pittsburgh, PA","Pittsburgh, PA",1,0.25,6.25,9,0.116027531956735,2034
+"4220430","Riverview School District","Pittsburgh, PA","Pittsburgh, PA","Pittsburgh, PA",1,0.5,9,10,0.639252336448598,535
 "2506480","Ipswich School District","Boston, MA","Cambridge-Newton-Framingham, MA","Boston-Cambridge-Newton, MA-NH",0,0,6,7,0,924
 "3615810","Jericho Union Free School District","Long Island, NY","Nassau County-Suffolk County, NY","New York-Newark-Jersey City, NY-NJ-PA",3,1,10,10,1,1148
 "0100011","Leeds City School District","Birmingham, AL","Birmingham-Hoover, AL","Birmingham-Hoover, AL",0,0,5,6,0,1259
@@ -2642,8 +2641,8 @@
 "5501740","Brodhead School District","Madison, WI","Madison, WI","Madison, WI",0,0,4,4,0,511
 "2636660","Zeeland Public Schools","Grand Rapids, MI","Grand Rapids-Wyoming, MI","Grand Rapids-Wyoming, MI",0,0,6.5,8,0,2420
 "3417490","West Long Branch Board of Education School District","New York, NY","New York-Jersey City-White Plains, NY-NJ","New York-Newark-Jersey City, NY-NJ-PA",0,0,6,6,0,350
-"0604110","Bassett Unified","Los Angeles, CA","Los Angeles-Long Beach-Glendale, CA","Los Angeles-Long Beach-Anaheim, CA",0,0,4.25,5,0,2095
 "0642000","West Covina Unified","Los Angeles, CA","Los Angeles-Long Beach-Glendale, CA","Los Angeles-Long Beach-Anaheim, CA",0,0,7,8,0,3602
+"0604110","Bassett Unified","Los Angeles, CA","Los Angeles-Long Beach-Glendale, CA","Los Angeles-Long Beach-Anaheim, CA",0,0,4.25,5,0,2095
 "5103000","Portsmouth City Public Schools","Hampton Roads, VA","Virginia Beach-Norfolk-Newport News, VA-NC","Virginia Beach-Norfolk-Newport News, VA-NC",0,0,4.31,7,0,8286
 "1000200","Christina School District","Wilmington, DE","Wilmington, DE-MD-NJ","Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",1,0.0526315789473684,5.16,9,0.0419851682829435,8765
 "4219860","Quaker Valley School District","Pittsburgh, PA","Pittsburgh, PA","Pittsburgh, PA",2,1,9,9,1,833
@@ -2699,7 +2698,7 @@
 "1705430","Beecher Community Unit School District 200u","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,7,7,0,432
 "0405400","Murphy Elementary District","Phoenix, AZ","Phoenix-Mesa-Scottsdale, AZ","Phoenix-Mesa-Scottsdale, AZ",0,0,2.25,4,0,1839
 "4819170","Ferris Independent School District","Dallas, TX","Dallas-Plano-Irving, TX","Dallas-Fort Worth-Arlington, TX",0,0,4.5,6,0,1061
-"1730510","Central Consolidated School District 180","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,2,2,0,380
+"1730510","Central Consolidated School District 180","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,6,6,0,380
 "1731740","Plainfield School District 202","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",1,0.0588235294117647,6.59,9,0.0697577624240406,12013
 "3905032","Fairbanks Local School District","Columbus, OH","Columbus, OH","Columbus, OH",0,0,8,8,0,415
 "4216170","Mount Pleasant Area School District","Pittsburgh, PA","Pittsburgh, PA","Pittsburgh, PA",0,0,5.67,8,0,955
@@ -3977,8 +3976,8 @@
 "2505160","Gateway School District","Springfield, MA","Springfield, MA","Springfield, MA",0,0,5,7,0,438
 "2922830","North Platte County R-I School District","Kansas City, MO","Kansas City, MO-KS","Kansas City, MO-KS",1,0.5,9,10,0.660660660660661,333
 "0600006","Ross Valley Elementary School District","San Rafael, CA","San Rafael, CA","San Francisco-Oakland-Hayward, CA",4,1,9.5,10,1,1550
-"1719230","Hillside School District 93","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,4,4,0,509
 "1726850","Morton Grove School District 70","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",1,1,9,9,1,855
+"1719230","Hillside School District 93","Chicago, IL","Chicago-Naperville-Arlington Heights, IL","Chicago-Naperville-Elgin, IL-IN-WI",0,0,4,4,0,509
 "2602190","Algonac Community School District","Warren, MI","Warren-Troy-Farmington Hills, MI","Detroit-Warren-Dearborn, MI",0,0,6.33,7,0,787
 "3414340","Roxbury Township School District","Newark, NJ","Newark, NJ-PA","New York-Newark-Jersey City, NY-NJ-PA",0,0,5.5,8,0,1480
 "1905070","Bondurant-Farrar Community School District","Des Moines, IA","Des Moines-West Des Moines, IA","Des Moines-West Des Moines, IA",0,0,7,7,0,793
@@ -4252,3 +4251,4 @@
 "1200480","Duval","Jacksonville, FL","Jacksonville, FL","Jacksonville, FL",13,0.12621359223301,4.41,10,0.172077922077922,58828
 "3404740","Englewood Public School District","New York, NY","New York-Jersey City-White Plains, NY-NJ","New York-Newark-Jersey City, NY-NJ-PA",0,0,2,2,0,569
 "0904350","Sterling School District","Worcester, MA","Worcester, MA-CT","Worcester, MA-CT",0,0,5,5,0,489
+"3905002","Hudson City School District","Akron, OH","Akron, OH","Akron, OH",1,1,10,10,1,651

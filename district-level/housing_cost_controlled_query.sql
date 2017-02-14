@@ -25,6 +25,7 @@ join geo_metro m
 where g.is_bounding_box is false
 and g.district_nces_code is not null
 and l.sale_price is not null
+and l.property_type_id in (3,4,6,13)
 and s.institution_type = 'Public'
 and s.elementary = TRUE
 and m.cbsa_title in (

@@ -40,12 +40,15 @@ print(great_schools_ratings %>%
           summarise(districts = n_distinct(district_nces_code)) %>%
           arrange(desc(districts)), n = 100)
     
-housing_cost <- read_csv("housing_cost_data.csv")
+housing_cost <- read_delim("housing_cost_data.csv", delim = ';')
 
 glimpse(housing_cost)
 summary(housing_cost)
 
+housing_cost$median_sale_price_per_sqft[housing_cost$median_sale_price_per_sqft>=5000 & !is.na(housing_cost$median_sale_price_per_sqft)] <- NA
+
 hist(housing_cost$median_sale_price, 30)
+hist(housing_cost$median_sale_price_per_sqft, 30)
 
 housing_cost_controlled <- read_csv("housing_cost_controlled_data.csv")
 

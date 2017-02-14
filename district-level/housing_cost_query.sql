@@ -19,6 +19,7 @@ join geo_metro m
 	on l.county_id = m.county_id
 where g.is_bounding_box is false
 and g.district_nces_code is not null
+and l.property_type_id in (3,4,6,13)
 and l.sale_price is not null
 and s.institution_type = 'Public'
 and s.elementary = TRUE
