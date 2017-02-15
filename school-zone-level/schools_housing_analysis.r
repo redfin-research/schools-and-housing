@@ -88,9 +88,9 @@ ttl_sales <- sum(housing_cost_controlled$total_sales)
 
 housing_cost_controlled %>% 
     dplyr::group_by(property_type) %>% 
-    summarise(sales = sum(total_sales), 
+    dplyr::summarise(sales = sum(total_sales), 
               as_pct = scales::percent(sales/ttl_sales)) %>% 
-    arrange(desc(sales))
+    dplyr::arrange(desc(sales))
 
 # Pull it all together
 full_dataset <- merge(great_schools_ratings, 
@@ -101,7 +101,8 @@ full_dataset <- merge(great_schools_ratings,
                         , -district_name
                         , -cbsa_title), 
                       by.x = "nces_code", 
-                      by.y = "school_nces_code")
+                      by.y = "school_nces_code",
+                      all.x = T)
 
 glimpse(full_dataset)
 
@@ -175,3 +176,4 @@ metros <- metro_premium_data %>%
                                     labels=c("Poor School", "Average School", "Top School")))
 
 ggsave('overall_housing_cost_premium_by_metro_graphic.png')
+
