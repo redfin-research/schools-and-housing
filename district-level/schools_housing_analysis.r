@@ -12,7 +12,8 @@ setwd("~/Google Drive/PRTeam Analysis/Misc/2017-02 Misc/New York Times School Vi
 # Load Packages
 packagesRequired <- c('stringr',
                       'ggthemes',
-                      'tidyverse')
+                      'tidyverse',
+                      'haven')
 
 packagesMissing <- packagesRequired[!(packagesRequired %in% installed.packages())]
 for (package in packagesMissing) {
@@ -25,66 +26,135 @@ for (package in packagesRequired){
 # View data files
 list.files(pattern = '.csv')
 
-# Full GreatSchools Ratings Methodology here:
-# http://www.greatschools.org/gk/wp-content/uploads/2016/07/GreatSchools_Ratings_Methodology_Report.pdf
-great_schools_ratings <- read_csv("great_schools_data.csv")
+# download.file('https://nces.ed.gov/programs/edge/data/GRF15.zip', 'GRF15.zip')
+# unzip('GRF15.zip', exdir = './GRF15')
+mapping <- haven::read_sas('./GRF15/grf15_lea_cbsa.sas7bdat')
 
-glimpse(great_schools_ratings)
+CBSAs <- c('New York-Newark-Jersey City, NY-NJ-PA',
+           'Los Angeles-Long Beach-Anaheim, CA',
+           'Chicago-Naperville-Elgin, IL-IN-WI',
+           'Washington-Arlington-Alexandria, DC-VA-MD-WV',
+           'Boston-Cambridge-Newton, MA-NH',
+           'San Francisco-Oakland-Hayward, CA',
+           'Seattle-Tacoma-Bellevue, WA',
+           'Minneapolis-St. Paul-Bloomington, MN-WI',
+           'Portland-Vancouver-Hillsboro, OR-WA')
 
-summary(great_schools_ratings)
+glimpse(mapping)
 
-hist(great_schools_ratings$avg_school_rating, 10)
+mapping <- filter(mapping, NAME_CBSA15 %in% CBSAs)
 
-print(great_schools_ratings %>%
-          group_by(metropolitan_statistical_area) %>%
-          summarise(districts = n_distinct(district_nces_code)) %>%
-          arrange(desc(districts)), n = 100)
-    
+mapping_zips <- read_sas('GRF15/grf15_lea_zcta5ce10.sas7bdat')
+mapping_zips <- filter(mapping_zips, NAME_CBSA15 %in% CBSAs)
+
+# Join to school data
+district_means <- read_csv('district_means_c.csv')
+
+glimpse(district_means)
+
+district_means$leaid <- str_pad(as.character(district_means$leaid), 7, 'left', '0')
+
+district_means <- left_join(mapping, district_means, 
+                        by = c('LEAID'='leaid'))
+
+district_means_missing <- filter(district_means, is.na(gsmean_pool))
+
+district_means <- district_means[complete.cases(district_means),]
+
+# Pull in housing data
 housing_cost <- read_delim("housing_cost_data.csv", delim = ';')
 
 glimpse(housing_cost)
 summary(housing_cost)
 
-housing_cost$median_sale_price_per_sqft[housing_cost$median_sale_price_per_sqft>=5000 & !is.na(housing_cost$median_sale_price_per_sqft)] <- NA
-
 hist(housing_cost$median_sale_price, 30)
 hist(housing_cost$median_sale_price_per_sqft, 30)
 
-housing_cost_controlled <- read_csv("housing_cost_controlled_data.csv")
 
-glimpse(housing_cost_controlled)
-summary(housing_cost_controlled)
+# Pull in Manhattan districts data
+nyc <- read_delim('manhattan_data.csv', delim = ';')
 
-hist(housing_cost_controlled$median_sale_price, 30)
-hist(housing_cost_controlled$median_sale_price_per_sqft, 30)
+glimpse(nyc)
+summary(nyc)
+
+nyc <- filter(nyc, price <= 120000000, price_per_sqft <= 10000)
+
+hist(nyc$price, 30)
+hist(nyc$price_per_sqft, 30)
+
+summary(nyc)
+
+nyc_medians <- nyc %>%
+    dplyr::group_by(district_nces_code, polygon_area, initcap, cbsa_title) %>%
+    dplyr::summarise(med_price = median(price, na.rm = T),
+              med_ppsf = median(price_per_sqft, na.rm = T),
+              total_properties = n_distinct(property_id))
+
+glimpse(nyc_medians)
 
 # Pull it all together
-full_dataset <- merge(great_schools_ratings, 
-                    select(
-                        housing_cost
-                        , -district_name)
-                    , by = "district_nces_code")
+names(nyc_medians) <- names(housing_cost)
 
-glimpse(full_dataset)
+# Remove Manhattan data from housing_cost
+housing_cost <- dplyr::filter(housing_cost, !(district_nces_code %in% nyc_medians$district_nces_code))
 
-write_csv(full_dataset, "combined_school_district_data.csv")
+housing_cost <- rbind(as.data.frame(housing_cost), as.data.frame(nyc_medians))
+glimpse(housing_cost)
 
-# Plot the data
-(graphic <- ggplot(full_dataset, 
-                   aes(avg_school_rating, median_sale_price)) +
-    geom_smooth(method = 'glm', se = F, show.legend = F, color = '#008FD5') +
-    geom_jitter(alpha = 0.6, show.legend = F, width = 0.2,
-                aes(size = total_students, color = '#008FD5')) +
-    scale_y_log10(breaks = c(25000, 50000, 100000, 200000, 400000, 800000, 1600000), 
-                  labels = c('$25k', '$50k', '$100k', '$200k', '$400k', '$800k', '$1.6m')) +
-    ggtitle("Housing Affordability and Quality of Schools",
-            subtitle = "Each circle is a school district, sized by number of students") +
-    theme_fivethirtyeight() +
-    theme(axis.title = element_text(size = rel(.8)),
-          plot.caption = element_text(size = rel(.8))) +
-    labs(x="Average School Rating", 
-        y="Median Home Sale Price", 
-        caption = "Data Source: GreatSchools; Redfin") +
-    scale_color_fivethirtyeight())
+write_csv(housing_cost, 'district_level_housing_cost.csv')
 
-ggsave('housing_affordability_school_quality_graphic.png')
+# housing_estimates <- read_delim('Property_estimate_data/dist_housing_cost_data.csv', delim = ';')
+# glimpse(housing_estimates)
+
+# housing_cost <- full_join(housing_cost, housing_estimates, by = "district_nces_code", suffix = c('','est'))
+
+# Join to school dataset
+combined_data <- left_join(district_means, 
+                     select(housing_cost, district_nces_code, 
+                            median_sale_price:total_sales), 
+                     by = c('LEAID'='district_nces_code'))
+
+# View(combined_data)
+glimpse(combined_data)
+tail(combined_data)
+
+summary(combined_data)
+
+# Combine with Census data
+census_data <- read_csv('census_data_full.csv')
+
+combined_data_all <- left_join(combined_data, 
+                               census_data, 
+              by = c('LEAID' = 'district_fips'),
+              suffix = c('', '_census')) 
+
+glimpse(combined_data_all)
+
+combined_data_all <- combined_data_all %>%
+    mutate(pop_density = total_population / LANDAREA) 
+
+# View(combined_data_all)
+
+# missing data by metro
+combined_data_all %>%
+    dplyr::group_by(NAME_CBSA15, complete.cases(combined_data_all)) %>%
+    dplyr::summarise(n())
+
+write_csv(combined_data_all, 'final_dataset.csv')
+
+tidy_data <- combined_data_all %>%
+    select(LEAID, NAME_LEA15, NAME_CBSA15, median_sale_price, median_sale_price_per_sqft, gsmean_pool, mean_commute_time, total_population, percent_under_30, percent_drive_alone, pop_density) %>%
+    ungroup() %>%
+    group_by(NAME_CBSA15) %>%
+    arrange(NAME_CBSA15, desc(total_population)) %>%
+    ungroup()
+
+tidy_data %>%
+    dplyr::group_by(NAME_CBSA15, complete.cases(tidy_data)) %>%
+    dplyr::summarise(n())
+
+write_csv(tidy_data, 'final_dataset_tidy.csv')
+
+
+
+
