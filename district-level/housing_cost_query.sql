@@ -3,10 +3,11 @@ select s.district_nces_code
 , initcap(s.district_name) as district_name
 , m.cbsa_title
 , quantile(l.sale_price::numeric, 0.5) as median_sale_price
-, quantile((l.sale_price::numeric / nullif(l.approx_sq_ft, 0)), 0.5) as median_sale_price_per_sqft
+, quantile((l.sale_price::numeric / coalesce(nullif(l.approx_sq_ft, 0), nullif(prop.sq_ft_finished, 0))), 0.5) as median_sale_price_per_sqft
 , count(distinct l.property_id) as total_sales
 from __school_district_shapes s
-join __school_districts_temp m on m.district_nces_code = s.district_nces_code
+join __school_districts_temp m 
+	on m.district_nces_code = s.district_nces_code
 join __property_geom p 
 	on st_intersects(p.geom, s.polygon) 
 	-- contains location geom for each property; 
@@ -14,6 +15,8 @@ join __property_geom p
 	-- listings from the MLS that sold in 2014, 15, & 16 for $5,000 or more
 join listings l 
 	on l.property_id = p.property_id
+left join properties prop 
+	on prop.property_id = l.property_id 
 where s.district_nces_code is not null
 and l.property_type_id in (3,4,6,13)
 and l.sale_price is not null

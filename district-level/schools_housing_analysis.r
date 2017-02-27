@@ -40,7 +40,6 @@ CBSAs <- c('New York-Newark-Jersey City, NY-NJ-PA',
            'Minneapolis-St. Paul-Bloomington, MN-WI',
            'Portland-Vancouver-Hillsboro, OR-WA')
 
-glimpse(mapping)
 
 mapping <- filter(mapping, NAME_CBSA15 %in% CBSAs)
 
@@ -49,8 +48,6 @@ mapping_zips <- filter(mapping_zips, NAME_CBSA15 %in% CBSAs)
 
 # Join to school data
 district_means <- read_csv('district_means_c.csv')
-
-glimpse(district_means)
 
 district_means$leaid <- str_pad(as.character(district_means$leaid), 7, 'left', '0')
 
@@ -64,33 +61,16 @@ district_means <- district_means[complete.cases(district_means),]
 # Pull in housing data
 housing_cost <- read_delim("housing_cost_data.csv", delim = ';')
 
-glimpse(housing_cost)
-summary(housing_cost)
-
-hist(housing_cost$median_sale_price, 30)
-hist(housing_cost$median_sale_price_per_sqft, 30)
-
-
 # Pull in Manhattan districts data
 nyc <- read_delim('manhattan_data.csv', delim = ';')
 
-glimpse(nyc)
-summary(nyc)
-
 nyc <- filter(nyc, price <= 120000000, price_per_sqft <= 10000)
-
-hist(nyc$price, 30)
-hist(nyc$price_per_sqft, 30)
-
-summary(nyc)
 
 nyc_medians <- nyc %>%
     dplyr::group_by(district_nces_code, polygon_area, initcap, cbsa_title) %>%
     dplyr::summarise(med_price = median(price, na.rm = T),
               med_ppsf = median(price_per_sqft, na.rm = T),
               total_properties = n_distinct(property_id))
-
-glimpse(nyc_medians)
 
 # Pull it all together
 names(nyc_medians) <- names(housing_cost)
@@ -99,14 +79,21 @@ names(nyc_medians) <- names(housing_cost)
 housing_cost <- dplyr::filter(housing_cost, !(district_nces_code %in% nyc_medians$district_nces_code))
 
 housing_cost <- rbind(as.data.frame(housing_cost), as.data.frame(nyc_medians))
-glimpse(housing_cost)
+
+housing_cost <- housing_cost %>%
+    group_by(district_nces_code) %>%
+    arrange(desc(total_sales)) %>%
+    slice(1) %>%
+    ungroup()
+
+# Manually fill in 2 more missing values in NY
+housing_cost$median_sale_price[housing_cost$district_nces_code=='3406600'] <- 230000
+housing_cost$median_sale_price[housing_cost$district_nces_code=='3416170'] <- 575000
+
+housing_cost$median_sale_price_per_sqft[housing_cost$district_nces_code=='3406600'] <- 125
+housing_cost$median_sale_price_per_sqft[housing_cost$district_nces_code=='3416170'] <- 195.45793
 
 write_csv(housing_cost, 'district_level_housing_cost.csv')
-
-# housing_estimates <- read_delim('Property_estimate_data/dist_housing_cost_data.csv', delim = ';')
-# glimpse(housing_estimates)
-
-# housing_cost <- full_join(housing_cost, housing_estimates, by = "district_nces_code", suffix = c('','est'))
 
 # Join to school dataset
 combined_data <- left_join(district_means, 
@@ -133,8 +120,6 @@ glimpse(combined_data_all)
 combined_data_all <- combined_data_all %>%
     mutate(pop_density = total_population / LANDAREA) 
 
-# View(combined_data_all)
-
 # missing data by metro
 combined_data_all %>%
     dplyr::group_by(NAME_CBSA15, complete.cases(combined_data_all)) %>%
@@ -155,6 +140,4 @@ tidy_data %>%
 
 write_csv(tidy_data, 'final_dataset_tidy.csv')
 
-
-
-
+save.image()
