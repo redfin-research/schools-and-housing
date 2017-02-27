@@ -26,10 +26,7 @@ for (package in packagesRequired){
 
 # Read in Census Data
 # Need to pull in Unified, Elementary & Secondary separately to have complete picture
-# if (file.exists('census_data.csv')) {
-#     census_data <- read_csv('census_data.csv')
-# } else {
-    
+
     # Pull census data
     states <- data.frame(state_abb = as.character(state.abb), state_name = as.character(state.name), region = as.character(state.region), stringsAsFactors = FALSE)
     
@@ -155,11 +152,7 @@ for (package in packagesRequired){
     rownames(census_data) <- 1:nrow(census_data)
     
     write_csv(census_data, 'census_data.csv')
-# }
-# 
-# if (file.exists('census_data_elem.csv')) {
-#     census_data_elem <- read_csv('census_data_elem.csv')
-# } else {
+
     # Then pull for elementary schools
     states <- c('AZ', 'CA', 'CT', 'GA', 'IL', 'KY', 'ME', 'MA', 'MI', 'MN', 'MO', 'MT', 'NH', 'NJ', 'NY', 'ND', 'OK', 'OR', 'RI', 'SC', 'TN', 'TX', 'VT', 'VA', 'WI', 'WY')
     
@@ -283,16 +276,13 @@ for (package in packagesRequired){
     rownames(census_data_elem) <- 1:nrow(census_data_elem)
     
     write_csv(census_data_elem, 'census_data_elem.csv')        
-# }
 
 glimpse(census_data)
 glimpse(census_data_elem)
 
 census_data <- rbind(census_data, census_data_elem)
 
-# if (file.exists('census_data_sec.csv')) {
-#     census_data_sec <- read_csv('census_data_sec.csv')
-# } else {
+
     # Then pull for elementary schools
     states <- c('AZ', 'CA', 'CT', 'GA', 'IL', 'KY', 'ME', 'MA', 'MN', 'MT', 'NH', 'NJ', 'NY', 'OK', 'OR', 'RI', 'SC', 'TN', 'TX', 'VT', 'WI')
     
@@ -416,7 +406,6 @@ census_data <- rbind(census_data, census_data_elem)
     rownames(census_data_sec) <- 1:nrow(census_data_sec)
     
     write_csv(census_data_sec, 'census_data_sec.csv')        
-# }
 
 glimpse(census_data)
 glimpse(census_data_sec)
@@ -438,5 +427,10 @@ census_data <- census_data %>%
     select(district_fips, district_name, percent_under_30, 
            total_population, percent_drive_alone, mean_commute_time)
 glimpse(census_data)
+
+census_data <- census_data %>%
+    group_by(district_fips) %>%
+    arrange(district_fips, desc(total_population)) %>%
+    slice(1)
 
 write_csv(census_data, 'census_data_full.csv')
