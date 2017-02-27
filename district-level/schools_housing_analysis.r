@@ -101,12 +101,6 @@ combined_data <- left_join(district_means,
                             median_sale_price:total_sales), 
                      by = c('LEAID'='district_nces_code'))
 
-# View(combined_data)
-glimpse(combined_data)
-tail(combined_data)
-
-summary(combined_data)
-
 # Combine with Census data
 census_data <- read_csv('census_data_full.csv')
 
@@ -114,8 +108,6 @@ combined_data_all <- left_join(combined_data,
                                census_data, 
               by = c('LEAID' = 'district_fips'),
               suffix = c('', '_census')) 
-
-glimpse(combined_data_all)
 
 combined_data_all <- combined_data_all %>%
     mutate(pop_density = total_population / LANDAREA) 
@@ -139,5 +131,15 @@ tidy_data %>%
     dplyr::summarise(n())
 
 write_csv(tidy_data, 'final_dataset_tidy.csv')
+
+# Distributions
+hist(tidy_data$median_sale_price, 30)
+hist(tidy_data$median_sale_price_per_sqft, 30)
+hist(tidy_data$gsmean_pool, 30)
+hist(tidy_data$mean_commute_time, 30)
+hist(log(tidy_data$total_population), 30)
+hist(tidy_data$percent_under_30, 30)
+hist(tidy_data$percent_drive_alone, 30)
+hist(log(tidy_data$pop_density), 30)
 
 save.image()
